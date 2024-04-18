@@ -1,0 +1,11 @@
+.vscode/settings.json
+.vagrant/rgloader/loader.rb
+.vagrant/machines/demon/virtualbox/vagrant_cwd
+.vagrant/machines/demon/virtualbox/synced_folders
+.vagrant/machines/demon/virtualbox/private_key
+.vagrant/machines/demon/virtualbox/index_uuid
+.vagrant/machines/demon/virtualbox/id
+.vagrant/machines/demon/virtualbox/box_meta
+.vagrant/machines/demon/virtualbox/creator_uid
+.vagrant/machines/demon/virtualbox/action_set_name
+.vagrant/machines/demon/virtualbox/action_provision

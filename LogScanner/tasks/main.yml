@@ -1,0 +1,7 @@
+---
+- name: Create NGINX defualt config file from template
+  template:
+    src: templates/default.conf.j2
+    dest: /etc/nginx/conf.d/default.conf
+  notify: 
+    - reload nginx
