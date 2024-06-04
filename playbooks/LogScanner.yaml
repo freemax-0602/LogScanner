@@ -1,6 +1,0 @@
----
-- name: Install and configure watch.timer service
-  hosts: demon
-  remote_user: root
-  roles:
-    - LogScanner
