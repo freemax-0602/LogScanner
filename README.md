@@ -41,3 +41,84 @@ Jun  4 11:16:47 demon root: Tue Jun  4 11:16:47 UTC 2024: I found word, Master!
 Jun  4 11:16:47 demon systemd: Started My watchlog service.
 
 ```
+
+***Задание 2***
+1. Установлены необходимые пакеты 
+`yum install epel-release -y && yum install spawn-fcgi php php-cli
+mod_fcgid httpd -y
+`
+2. Раскоментированы строки с переменными в конфиге сервиса spawn `/etc/sysconfig/spawn-fcgi`
+```
+# You must set some working options before the "spawn-fcgi" service will work.
+# If SOCKET points to a file, then this file is cleaned up by the init script.
+#
+# See spawn-fcgi(1) for all possible options.
+#
+# Example :
+SOCKET=/var/run/php-fcgi.sock
+OPTIONS="-u apache -g apache -s $SOCKET -S -M 0600 -C 32 -F 1 -P /var/run/spawn-fcgi.pid -- /usr/bin/php-cgi"
+```
+
+3. Добавлен unit для spawn - `spawn-fcgi.service` :
+```
+[Unit]
+Description=Spawn-fcgi startup service by Otus
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/spawn-fcgi.pid
+EnvironmentFile=/etc/sysconfig/spawn-fcgi
+ExecStart=/usr/bin/spawn-fcgi -n $OPTIONS
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+4. Проверена работа сервиса:
+```
+[root@demon ~]# systemctl start spawn-fcgi           
+[root@demon ~]# systemctl status spawn-fcgi
+● spawn-fcgi.service - Spawn-fcgi startup service by Otus
+   Loaded: loaded (/etc/systemd/system/spawn-fcgi.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2024-06-04 12:34:02 UTC; 4s ago
+ Main PID: 3802 (php-cgi)
+   CGroup: /system.slice/spawn-fcgi.service
+           ├─3802 /usr/bin/php-cgi
+           ├─3803 /usr/bin/php-cgi
+           ├─3804 /usr/bin/php-cgi
+           ├─3805 /usr/bin/php-cgi
+           ├─3806 /usr/bin/php-cgi
+           ├─3807 /usr/bin/php-cgi
+           ├─3808 /usr/bin/php-cgi
+           ├─3809 /usr/bin/php-cgi
+           ├─3810 /usr/bin/php-cgi
+           ├─3811 /usr/bin/php-cgi
+           ├─3812 /usr/bin/php-cgi
+           ├─3813 /usr/bin/php-cgi
+           ├─3814 /usr/bin/php-cgi
+           ├─3815 /usr/bin/php-cgi
+           ├─3816 /usr/bin/php-cgi
+           ├─3817 /usr/bin/php-cgi
+           ├─3818 /usr/bin/php-cgi
+           ├─3819 /usr/bin/php-cgi
+           ├─3820 /usr/bin/php-cgi
+           ├─3821 /usr/bin/php-cgi
+           ├─3822 /usr/bin/php-cgi
+           ├─3823 /usr/bin/php-cgi
+           ├─3824 /usr/bin/php-cgi
+           ├─3825 /usr/bin/php-cgi
+           ├─3826 /usr/bin/php-cgi
+           ├─3827 /usr/bin/php-cgi
+           ├─3828 /usr/bin/php-cgi
+           ├─3829 /usr/bin/php-cgi
+           ├─3830 /usr/bin/php-cgi
+           ├─3831 /usr/bin/php-cgi
+           ├─3832 /usr/bin/php-cgi
+           ├─3833 /usr/bin/php-cgi
+           └─3834 /usr/bin/php-cgi
+
+Jun 04 12:34:02 demon systemd[1]: Started Spawn-fcgi startup service by Otus.
+```
