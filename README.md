@@ -122,3 +122,83 @@ WantedBy=multi-user.target
 
 Jun 04 12:34:02 demon systemd[1]: Started Spawn-fcgi startup service by Otus.
 ```
+
+***Задание 3***
+1. Отредактирован шаблон для httpd
+```
+EnvironmentFile=/etc/sysconfig/httpd-%I
+```
+2. Созданы файлы окружения:
+```
+[root@demon ~]# cat /etc/sysconfig/httpd-first 
+#
+# This file can be used to set additional environment variables for
+# the httpd process, or pass additional options to the httpd
+# executable.
+#
+# Note: With previous versions of httpd, the MPM could be changed by
+# editing an "HTTPD" variable here.  With the current version, that
+# variable is now ignored.  The MPM is a loadable module, and the
+# choice of MPM can be changed by editing the configuration file
+# /etc/httpd/conf.modules.d/00-mpm.conf.
+# 
+
+#
+# To pass additional options (for instance, -D definitions) to the
+# httpd binary at startup, set OPTIONS here.
+#
+OPTIONS=-f conf/first.conf
+
+#
+# This setting ensures the httpd process is started in the "C" locale
+# by default.  (Some modules will not behave correctly if
+# case-sensitive string comparisons are performed in a different
+# locale.)
+#
+LANG=C
+[root@demon ~]# cat /etc/sysconfig/httpd-second 
+#
+# This file can be used to set additional environment variables for
+# the httpd process, or pass additional options to the httpd
+# executable.
+#
+# Note: With previous versions of httpd, the MPM could be changed by
+# editing an "HTTPD" variable here.  With the current version, that
+# variable is now ignored.  The MPM is a loadable module, and the
+# choice of MPM can be changed by editing the configuration file
+# /etc/httpd/conf.modules.d/00-mpm.conf.
+# 
+
+#
+# To pass additional options (for instance, -D definitions) to the
+# httpd binary at startup, set OPTIONS here.
+#
+OPTIONS=-f conf/second.conf
+
+#
+# This setting ensures the httpd process is started in the "C" locale
+# by default.  (Some modules will not behave correctly if
+# case-sensitive string comparisons are performed in a different
+# locale.)
+#
+LANG=C
+[root@demon ~]# 
+```
+
+4. Созданы файлы конфигов для окружений:
+```
+[root@demon ~]# cat /etc/httpd/conf/first.conf | grep Listen
+# Listen: Allows you to bind Apache to specific IP addresses and/or
+# Change this to Listen on specific IP addresses as shown below to 
+#Listen 12.34.56.78:80
+Listen 80
+
+
+[root@demon ~]# cat /etc/httpd/conf/second.conf | grep Listen
+# Listen: Allows you to bind Apache to specific IP addresses and/or
+# Change this to Listen on specific IP addresses as shown below to 
+#Listen 12.34.56.78:80
+Listen 8080
+```
+
+5. Запущены сервисы
