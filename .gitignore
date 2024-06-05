@@ -9,3 +9,4 @@
 .vagrant/machines/demon/virtualbox/creator_uid
 .vagrant/machines/demon/virtualbox/action_set_name
 .vagrant/machines/demon/virtualbox/action_provision
+.vagrant/bundler/global.sol
