@@ -41,5 +41,8 @@ Vagrant.configure("2") do |config|
         systemctl restart sshd
       SHELL
     end
+    config.vm.provision "ansible" do |ansible|
+      ansible.playbook = "Configure_Systemd.yml"
+    end
   end
 end
